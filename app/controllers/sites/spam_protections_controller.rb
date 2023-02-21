@@ -8,7 +8,7 @@ class Sites::SpamProtectionsController < Sites::BaseController
   end
 
   def update
-    if @settings.update_attributes(params[:settings])
+    if @settings.update_attributes(settings_params)
       flash[:notice] = 'Bot protection settings updated.'
       redirect_to edit_admin_site_spam_protection_url
     else
@@ -18,6 +18,10 @@ class Sites::SpamProtectionsController < Sites::BaseController
   end
 
   private
+
+  def settings_params
+    params.require(:settings).permit(:spam_protection_level)
+  end
 
   def find_settings
     @settings = current_account.settings
