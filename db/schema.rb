@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_28_215614) do
+ActiveRecord::Schema.define(version: 2023_02_21_162649) do
 
   create_table "access_tokens", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.bigint "owner_id", null: false
@@ -1273,6 +1273,7 @@ ActiveRecord::Schema.define(version: 2022_02_28_215614) do
     t.string "iam_tools_switch", default: "denied", null: false
     t.string "require_cc_on_signup_switch", default: "denied", null: false
     t.boolean "enforce_sso", default: false, null: false
+    t.boolean "login_security_enabled", default: false
     t.index ["account_id"], name: "index_settings_on_account_id", unique: true
   end
 
