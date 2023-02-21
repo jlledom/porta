@@ -158,7 +158,7 @@ module VerticalNavHelper
     if can?(:manage, :settings)
       items << {                       title: 'Settings'}
       items << {id: :admin_site_dns,   title: 'Domains & Access', path: admin_site_dns_path}
-      items << {id: :spam_protection,  title: 'Spam Protection',  path: edit_admin_site_spam_protection_path}
+      items << {id: :spam_protection,  title: 'Bot Protection',  path: edit_admin_site_spam_protection_path}
       items << {id: :xss_protection,   title: 'XSS Protection',   path: edit_admin_site_developer_portal_path} if current_account.show_xss_protection_options?
       items << {id: :sso_integrations, title: 'SSO Integrations', path: provider_admin_authentication_providers_path}
       items << {id: :forum_settings,   title: 'Forum Settings',   path: edit_admin_site_forum_path} if !current_account.forum_enabled? && provider_can_use?(:forum)
