@@ -20,7 +20,7 @@ class Sites::SpamProtectionsController < Sites::BaseController
   private
 
   def settings_params
-    params.require(:settings).permit(:spam_protection_level)
+    params.require(:settings).permit(%i[spam_protection_level login_security_enabled])
   end
 
   def find_settings
