@@ -23,7 +23,7 @@ jobs:
         name: Generate diff log
         run: |
           issues=$(git log origin/${{ inputs.to_branch }}..origin/${{ inputs.ref }} | grep -ioh "THREESCALE-[0-9]\+" | sort -u)
-          echo '$issues' >> $GITHUB_OUTPUT
+          echo 'issues=$issues' >> $GITHUB_OUTPUT
           log=$(git log origin/${{ inputs.to_branch }}..origin/${{ inputs.ref }} --pretty=format:'%h - %s (%an)')
           echo "log<<EOF" >> $GITHUB_OUTPUT
           echo "$log" >> $GITHUB_OUTPUT
