@@ -22,6 +22,8 @@ jobs:
       - id: git_log
         name: Generate diff log
         run: |
+          issues=$(git log origin/${{ inputs.to_branch }}..origin/${{ inputs.ref }} | grep -ioh "THREESCALE-[0-9]\+" | sort -u)
+          echo '$issues' >> $GITHUB_OUTPUT
           log=$(git log origin/${{ inputs.to_branch }}..origin/${{ inputs.ref }} --pretty=format:'%h - %s (%an)')
           echo "log<<EOF" >> $GITHUB_OUTPUT
           echo "$log" >> $GITHUB_OUTPUT
@@ -32,6 +34,9 @@ jobs:
           git push origin ${{ inputs.to_branch }}
       - name: Print diff log
         run: |
+          echo "Issues mentioned in the changelog:"
+          echo ${{ steps.git_log.outputs.issues }}
+          echo "Changelog summary:"
           cat << EOF
           ${{ steps.git_log.outputs.log }}
           EOF
