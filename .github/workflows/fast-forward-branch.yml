@@ -36,11 +36,11 @@ jobs:
           git push origin ${{ inputs.to_branch }}
       - name: Print diff log
         run: |
-          echo "ISSUES MENTIONED IN THE CHANGELOG:"
+          echo -e "\nISSUES MENTIONED IN THE CHANGELOG:"
           cat << EOF
           ${{ steps.git_log.outputs.issues }}
           EOF
-          echo "CHANGELOG SUMMARY:"
+          echo -e "\nCHANGELOG SUMMARY:"
           cat << EOF
           ${{ steps.git_log.outputs.log }}
           EOF
