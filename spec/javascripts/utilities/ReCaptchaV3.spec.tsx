@@ -8,7 +8,7 @@ const ReCaptchaV3 = jest.requireActual('utilities/ReCaptchaV3').ReCaptchaV3 as F
 
 describe('ReCaptchaV3', () => {
   it('should render itself correctly', () => {
-    const wrapper = mount(<ReCaptchaV3 enabled={true} siteKey='fakeKey' action='test/action'/>)
+    const wrapper = mount(<ReCaptchaV3 enabled action="test/action" siteKey="fakeKey" />)
 
     expect(wrapper.exists(ReCaptchaV3)).toEqual(true)
     expect(wrapper.find('input').prop('className')).toMatch('g-recaptcha')
@@ -16,14 +16,14 @@ describe('ReCaptchaV3', () => {
 
   it('should give the proper name to the input', () => {
     const action = 'test/action'
-    const wrapper = mount(<ReCaptchaV3 enabled={true} siteKey='fakeKey' action={action}/>)
+    const wrapper = mount(<ReCaptchaV3 enabled action={action} siteKey="fakeKey" />)
 
     expect(wrapper.find('input').prop('name')).toBe(`g-recaptcha-response-data[${action}]`)
   })
 
   it('should render empty when disabled', () => {
-    const wrapper = mount(<ReCaptchaV3 enabled={false} siteKey='fakeKey' action='test/action'/>)
+    const wrapper = mount(<ReCaptchaV3 action="test/action" siteKey="fakeKey" />)
 
-    expect(wrapper.find('input')).toHaveLength(0);
+    expect(wrapper.find('input')).toHaveLength(0)
   })
 })

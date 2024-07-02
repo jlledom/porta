@@ -5,12 +5,12 @@ import { useScript } from 'utilities/useScript'
 import type { ReactElement } from 'react'
 
 interface Props {
-  enabled: boolean;
+  enabled?: boolean;
   siteKey: string;
   action: string;
 }
 
-const ReCaptchaV3 = ({ enabled, siteKey, action }: Props): ReactElement => {
+const ReCaptchaV3 = ({ enabled = false, siteKey, action }: Props): ReactElement => {
   if (!enabled) return (<div>{null}</div>)
 
   const inputId = `g-recaptcha-response-data-${action}`.replace(/\//g, '-')
