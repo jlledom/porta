@@ -2,23 +2,20 @@ import { useState } from 'react'
 
 import { useScript } from 'utilities/useScript'
 
-import type { ReactElement } from 'react'
+import type { FunctionComponent } from 'react'
 
 interface Props {
-  enabled?: boolean;
   siteKey: string;
   action: string;
 }
 
-const ReCaptchaV3 = ({ enabled = false, siteKey, action }: Props): ReactElement => {
-  if (!enabled) return (<div>{null}</div>)
-
+const ReCaptchaV3: FunctionComponent<Props> = ({ siteKey, action }) => {
   const inputId = `g-recaptcha-response-data-${action}`.replace(/\//g, '-')
   const inputName = `g-recaptcha-response-data[${action}]`
   const [token, setToken] = useState('')
 
   useScript(`https://www.google.com/recaptcha/api.js?render=${siteKey}`, () => {
-    const grecaptcha = window.grecaptcha
+    const { grecaptcha } = window
     grecaptcha.ready(() => {
       grecaptcha.execute(siteKey, { action: action })
         .then((t: string) => {

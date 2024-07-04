@@ -121,7 +121,7 @@ const LoginForm: FunctionComponent<Props> = ({
           onChange={handleOnChange('password')}
         />
       </FormGroup>
-      <ReCaptchaV3 action={recaptcha.action} enabled={recaptcha.enabled} siteKey={recaptcha.siteKey} />
+      {recaptcha.enabled && <ReCaptchaV3 action={recaptcha.action} siteKey={recaptcha.siteKey} /> }
 
       <ActionGroup>
         <Button
