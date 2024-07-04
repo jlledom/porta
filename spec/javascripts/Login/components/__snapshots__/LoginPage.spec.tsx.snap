@@ -1653,13 +1653,6 @@ exports[`should render itself 1`] = `
                             </div>
                           </GenerateId>
                         </FormGroup>
-                        <ReCaptchaV3
-                          action=""
-                          enabled={false}
-                          siteKey=""
-                        >
-                          <div />
-                        </ReCaptchaV3>
                         <ActionGroup>
                           <div
                             className="pf-c-form__group pf-m-action"
