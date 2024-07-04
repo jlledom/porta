@@ -412,13 +412,6 @@ exports[`should not render reset password button when disablePasswordReset is tr
                             </div>
                           </GenerateId>
                         </FormGroup>
-                        <ReCaptchaV3
-                          action=""
-                          enabled={false}
-                          siteKey=""
-                        >
-                          <div />
-                        </ReCaptchaV3>
                         <ActionGroup>
                           <div
                             className="pf-c-form__group pf-m-action"
@@ -920,13 +913,6 @@ exports[`should render Login form and Authentication providers when available 1`
                             </div>
                           </GenerateId>
                         </FormGroup>
-                        <ReCaptchaV3
-                          action=""
-                          enabled={false}
-                          siteKey=""
-                        >
-                          <div />
-                        </ReCaptchaV3>
                         <ActionGroup>
                           <div
                             className="pf-c-form__group pf-m-action"
@@ -2178,13 +2164,6 @@ exports[`should render reset password button when disablePasswordReset is false 
                             </div>
                           </GenerateId>
                         </FormGroup>
-                        <ReCaptchaV3
-                          action=""
-                          enabled={false}
-                          siteKey=""
-                        >
-                          <div />
-                        </ReCaptchaV3>
                         <ActionGroup>
                           <div
                             className="pf-c-form__group pf-m-action"
