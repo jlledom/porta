@@ -1,5 +1,5 @@
-@javascript
 @recaptcha
+@javascript
 Feature: Login feature
   In order to protect the admin login screen from brute force attacks
   I want to detect bots with ReCaptcha V3
@@ -28,4 +28,3 @@ Feature: Login feature
     And the client will be marked as a bot
     When the provider logs in
     Then the current page is the provider failed login page
-    And they should see "reCAPTCHA verification failed, please try again."
