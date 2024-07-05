@@ -41,9 +41,6 @@ World(Module.new do
     when 'the provider login page'
       provider_login_path
 
-    when 'the provider failed login page'
-      provider_sessions_path
-
     when 'the provider onboarding wizard page'
       provider_admin_onboarding_wizard_intro_path
 
