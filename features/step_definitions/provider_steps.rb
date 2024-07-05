@@ -48,15 +48,6 @@ When "{provider} wants to log in" do |provider|
   visit provider_login_path
 end
 
-Given "{provider} tries to log in" do |provider|
-  username = provider.admins.first.username
-  set_current_domain provider.external_admin_domain
-  visit provider_login_path
-  fill_in 'Email or Username', with:  username
-  fill_in 'Password', with: "supersecret"
-  click_button 'Sign in'
-end
-
 Then "the provider login attempt fails" do
   assert_current_path "/p/sessions"
   assert find_field('Email or Username')
