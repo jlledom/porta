@@ -43,18 +43,6 @@ Given(/^there is no provider with domain "([^"]*)"$/) do |domain|
   Account.find_by_domain(domain).try!(&:destroy)
 end
 
-When "{provider} wants to log in" do |provider|
-  set_current_domain provider.external_admin_domain
-  visit provider_login_path
-end
-
-Then "the provider login attempt fails" do
-  assert_current_path "/p/sessions"
-  assert find_field('Email or Username')
-  assert find_field('Password')
-  assert find_button('Sign in', disabled: true)
-end
-
 Given "{provider} has the following fields defined for {field_definition_target}:" do |provider, target, table|
   provider.fields_definitions.by_target(target).each(&:destroy)
 
@@ -272,11 +260,6 @@ Given(/^master admin( is logged in)?/) do |login|
   set_current_domain @master.external_domain
   stub_integration_errors_dashboard
   try_provider_login(admin.username, 'supersecret') if login
-end
-
-Given "{provider} has bot protection {enabled}" do |provider, enabled|
-  level = enabled ? :captcha : :none
-  provider.settings.update_attribute(:spam_protection_level, level)
 end
 
 When(/^I have opened edit page for the active member$/) do

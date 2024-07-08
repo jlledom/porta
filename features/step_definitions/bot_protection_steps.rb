@@ -7,6 +7,10 @@ Given "the client {will} be marked as a bot" do |bot|
 end
 
 Then "the captcha {is} present" do |present|
-  page.should have_selector(RECAPTCHA_INPUT, visible: false) if present
-  page.should_not have_selector(RECAPTCHA_INPUT, visible: false) unless present
+  assert_equal present, has_selector?(RECAPTCHA_INPUT, visible: false)
+end
+
+Given "{provider} has bot protection {enabled}" do |provider, enabled|
+  level = enabled ? :captcha : :none
+  provider.settings.update_attribute(:spam_protection_level, level)
 end
