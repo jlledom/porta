@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Given "a buyer {string}" do |name|
-  @account = FactoryBot.create(:buyer_account, provider_account: @provider, org_name: name)
+  @buyer = @account = FactoryBot.create(:buyer_account, provider_account: @provider, org_name: name)
   @account.buy! @provider.account_plans.default
 end
 

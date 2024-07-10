@@ -7,6 +7,23 @@ Feature: Login feature
       And provider "foo.3scale.localhost" has multiple applications enabled
       And a buyer "bob" signed up to provider "foo.3scale.localhost"
 
+  Scenario: Buyer lands on the homepage when in enterprise mode
+    When I log in as "bob" on foo.3scale.localhost
+    Then I should be on the homepage
+
+  Scenario: Buyer lands in dashboard when he requests login page
+    Given the current domain is foo.3scale.localhost
+    And I log in as "bob" on foo.3scale.localhost
+    And I go to the login page
+    Then I should be on the dashboard
+
+  @security
+  Scenario: Provider cannot login in buyer domain
+    Given the current domain is foo.3scale.localhost
+    When I try to log in as "foo.3scale.localhost" with password "supersecret"
+    Then I should not be logged in
+    And I should see "Incorrect email or password. Please try again."
+
   @security
   Scenario: Buyer can log in with csrf protection enabled
     Given the current domain is foo.3scale.localhost

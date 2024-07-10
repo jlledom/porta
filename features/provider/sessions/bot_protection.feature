@@ -1,20 +1,21 @@
 @javascript
 @recaptcha
-Feature: Login feature
+Feature: Login page
+
   In order to protect the admin login screen from brute force attacks
   I want to detect bots with ReCaptcha V3
 
   Background:
-    Given a provider "foo.3scale.localhost"
+    Given a provider
 
   Scenario: Captcha is disabled
     Given the master provider has bot protection disabled
-    When the provider wants to log in
+    When they go to the provider login page
     Then the captcha is not present
 
   Scenario: Captcha is enabled
     Given the master provider has bot protection enabled
-    When the provider wants to log in
+    When they go to the provider login page
     Then the captcha is present
 
   Scenario: Provider can log in with Captcha enabled
@@ -27,4 +28,4 @@ Feature: Login feature
     Given the master provider has bot protection enabled
     And the client will be marked as a bot
     When the provider logs in
-    Then the provider login attempt fails
+    Then they should not be logged in
