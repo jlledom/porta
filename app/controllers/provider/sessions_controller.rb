@@ -108,4 +108,8 @@ class Provider::SessionsController < FrontendController
   def instantiate_sessions_presenter
     @presenter = Provider::SessionsPresenter.new(domain_account)
   end
+
+  def bot_protection_level
+    domain_account.settings.admin_bot_protection_level
+  end
 end
