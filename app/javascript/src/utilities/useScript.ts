@@ -1,11 +1,19 @@
+import { useEffect } from 'react'
+
 const useScript = (url: string, cb: (ev: Event) => void): void => {
-  const script = document.createElement('script')
+  useEffect(() => {
+    const script = document.createElement('script')
 
-  script.src = url
-  script.async = true
-  script.addEventListener('load', cb)
+    script.src = url
+    script.async = true
+    script.addEventListener('load', cb)
 
-  document.body.appendChild(script)
+    document.body.appendChild(script)
+
+    return () => {
+      document.body.removeChild(script)
+    }
+  }, [])
 }
 
 export { useScript }
