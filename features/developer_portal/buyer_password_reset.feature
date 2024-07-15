@@ -7,7 +7,7 @@ Feature: Buyer signup
     And the following application plan:
       | Product    | Name       |
       | Master API | enterprise |
-    And the provider has bot protection enabled
+    And the provider has bot protection enabled for its buyers
     And the provider account allows signups
 
   @recaptcha
