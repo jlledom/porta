@@ -12,5 +12,11 @@ end
 
 Given "{provider} has bot protection {enabled}" do |provider, enabled|
   level = enabled ? :captcha : :none
+  provider.settings.update_attribute(:admin_bot_protection_level, level)
+end
+
+Given "{provider} has bot protection {enabled} for its buyers" do |provider, enabled|
+  level = enabled ? :captcha : :none
   provider.settings.update_attribute(:spam_protection_level, level)
 end
+
