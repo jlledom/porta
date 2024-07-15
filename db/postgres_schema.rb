@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_02_090207) do
+ActiveRecord::Schema.define(version: 2024_07_15_075900) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -1268,6 +1268,7 @@ ActiveRecord::Schema.define(version: 2024_03_02_090207) do
     t.string "iam_tools_switch", limit: 255, default: "denied", null: false
     t.string "require_cc_on_signup_switch", limit: 255, default: "denied", null: false
     t.boolean "enforce_sso", default: false, null: false
+    t.string "admin_bot_protection_level", default: "none"
     t.index ["account_id"], name: "index_settings_on_account_id", unique: true
   end
 

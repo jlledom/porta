@@ -101,6 +101,11 @@ class Settings < ApplicationRecord
     level == :auto ? :captcha : level
   end
 
+  # To avoid a dangerous DB migration, we allow empty values in the column and assume empty means `:none`
+  def admin_bot_protection_level
+    super&.to_sym || :none
+  end
+
   delegate :provider_id_for_audits, :to => :account, :allow_nil => true
 
   private
