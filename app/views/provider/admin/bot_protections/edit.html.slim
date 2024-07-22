@@ -1,5 +1,6 @@
 - content_for :title, 'Bot Protection'
 - content_for :page_header_title, 'Bot Protection'
+- content_for :page_header_body, t('.description')
 
 = semantic_form_for @settings, url: provider_admin_bot_protection_path, html: {:id => 'bot-protection-settings' } do |form|
   = form.inputs 'Protection against bots' do
