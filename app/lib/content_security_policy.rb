@@ -2,7 +2,7 @@
 
 module ContentSecurityPolicy
 
-  RECAPTCHA_BASE_URLS = %w(https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/)
+  RECAPTCHA_BASE_URLS = %w(https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ https://www.recaptcha.net/recaptcha/)
 
   def self.setup_policy(asset_host)
     Rails.application.config.content_security_policy do |policy|
