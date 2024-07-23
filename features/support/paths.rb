@@ -222,8 +222,15 @@ World(Module.new do
       provider_admin_account_email_configurations_path
     when 'the new email configurations page'
       new_provider_admin_account_email_configurations_path
+
+    #
+    # SSO Integrations (Admin portal)
+    #
     when 'the users sso integrations page'
       provider_admin_account_authentication_providers_path
+    when 'the sso integration page'
+      auth_provider = AuthenticationProvider.last
+      provider_admin_account_authentication_provider_path(auth_provider)
 
     #
     # ActiveDocs (Admin portal)
@@ -349,16 +356,17 @@ World(Module.new do
       new_admin_account_plan_path
 
     #
-    # Service contracts (subscriptions)
+    # Service contracts (Admin portal)
     #
     when 'the service subscription page'
       new_admin_service_contract_path
 
-    when 'the service subscriptions list for provider',
-         'the service contracts admin page',
-         'the subscriptions admin page',
-         /^the subscriptions admin page with (\d+) records? per page$/
-      admin_buyers_service_contracts_path(:per_page => $1)
+    when 'the provider service subscriptions page'
+      admin_buyers_service_contracts_path
+
+    when /^(?:buyer "(.*)"|the buyer's) service subscriptions page$/
+      buyer = $1.present? ? Account.buyers.find_by!(org_name: $1) : @buyer
+      admin_buyers_account_service_contracts_path(buyer)
 
     #
     # Applications (Admin portal)
@@ -487,13 +495,6 @@ World(Module.new do
 
     when /^the data exports page$/
       new_admin_data_exports_path
-
-    when /^the buyer account config page for "([^"]*)"$/
-      admin_buyers_account_configs_path(Account.find_by_org_name!($1))
-
-    when /^the buyer account service contracts page for "([^"]*)"$/
-      admin_buyers_account_service_contracts_path Account.find_by_org_name!($1)
-
 
     #
     # Forum admin
