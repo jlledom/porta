@@ -64,16 +64,6 @@ module System
     # Protect from open redirect attacks in `redirect_back_or_to` and `redirect_to`.
     config.action_controller.raise_on_open_redirects = false
 
-    # Change the format of the cache entry.
-    #
-    # Changing this default means that all new cache entries added to the cache
-    # will have a different format that is not supported by Rails 7.0
-    # applications.
-    # Only change this value after your application is fully deployed to Rails 7.1
-    # and you have no plans to rollback.
-    # TODO: update to 7.1
-    config.active_support.cache_format_version = 7.0
-
     # To migrate an existing application to the `:json` serializer, use the `:hybrid` option.
     #
     # Rails transparently deserializes existing (Marshal-serialized) cookies on read and
