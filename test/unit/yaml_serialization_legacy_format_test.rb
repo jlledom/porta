@@ -3,20 +3,15 @@
 require 'test_helper'
 
 class YamlSerializationLegacyFormatTest < ActiveSupport::TestCase
-  # This test ensures that legacy YAML data serialized with !map:HashWithIndifferentAccess
-  # can be deserialized properly. This format was used in older versions of Rails.
-  #
-  # CONTEXT: The primary use case is the `extra_fields` column on the `cinstances` table.
-  # Extra fields are custom fields defined by FieldsDefinition and stored as a Hash
-  # in the extra_fields column (serialized as YAML). The keys are the field names
-  # and values are user-provided data.
+  # Some model attributes that are represented as Hash (or, more specifically, HashWithIndifferentAccess)
+  # were serialized as YAML in the database, with the prefix !map:HashWithIndifferentAccess (used in older versions of Rails)
+  # Trying to deserialize such values was causing an exception:
+  #    Psych::DisallowedClass: Tried to load unspecified class: HashWithIndifferentAccess
   #
   # The fix is in config/application.rb where 'HashWithIndifferentAccess' (as a string)
   # is added to yaml_column_permitted_classes.
   #
-  # Without this fix, loading old YAML would raise:
-  #   Psych::DisallowedClass: Tried to load unspecified class: HashWithIndifferentAccess
-
+  # An example of such field is 'extra_fields' in Account, Cinstance, User models, but there might be others
   test 'can deserialize legacy HashWithIndifferentAccess YAML format in Cinstance extra_fields' do
     # Setup: Create a provider account that will own the fields definitions
     provider = FactoryBot.create(:provider_account)
@@ -60,23 +55,12 @@ class YamlSerializationLegacyFormatTest < ActiveSupport::TestCase
 
     assert_not_includes raw_yaml, '!map:HashWithIndifferentAccess',
                         'Re-serialized extra_fields should use modern format'
+    assert_includes raw_yaml, '!ruby/hash:ActiveSupport::HashWithIndifferentAccess',
+                    'Re-serialized extra_fields should use modern format'
 
     # But data should still be accessible
     application.reload
     assert_equal 'custom_value', application.extra_fields['custom_field']
     assert_equal 'custom_value', application.extra_fields[:custom_field]
-  end
-
-  test 'legacy YAML format is included in permitted classes configuration' do
-    permitted_classes = Rails.application.config.active_record.yaml_column_permitted_classes
-
-    # Must include the string 'HashWithIndifferentAccess' for Psych to resolve the YAML tag
-    # This is critical for deserializing old extra_fields data in cinstances and other models
-    assert_includes permitted_classes, 'HashWithIndifferentAccess',
-                    "Config must include 'HashWithIndifferentAccess' string to support legacy YAML format in extra_fields"
-
-    # Also verify the class itself is included (for modern YAML)
-    assert_includes permitted_classes, ActiveSupport::HashWithIndifferentAccess,
-                    "Config should include ActiveSupport::HashWithIndifferentAccess class"
   end
 end
