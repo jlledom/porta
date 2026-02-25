@@ -8,6 +8,7 @@ NonDigestAssets.asset_selectors += %w(
   dashboard_arrow.gif
   cross.png
   tick.png
+  img_close.png
   child_metric_background.png
   spinner.svg
   up_green.png
