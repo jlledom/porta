@@ -10,7 +10,7 @@ ADD . ./
 RUN cp config/examples/*.yml config/ \
     && cp openshift/system/config/* config/
 
-RUN dnf -y --enablerepo=crb --setopt=module_stream_switch=True module enable ruby:${RUBY_VERSION} nodejs:18 \
+RUN dnf -y --enablerepo=crb --setopt=module_stream_switch=True module enable ruby:${RUBY_VERSION} nodejs:24 \
     && dnf install -y --enablerepo=crb --setopt=skip_missing_names_on_install=False,tsflags=nodocs shared-mime-info make automake gcc gcc-c++ postgresql rubygem-irb rubygem-rdoc ruby-devel nodejs libpq-devel mysql-devel gd-devel libxml2-devel libyaml-devel libxslt-devel git 'dnf-command(download)' cpio \
     && BUNDLER_VERSION=$(awk '/BUNDLED WITH/ { getline; print $1 }' Gemfile.lock) \
     && gem install --no-document bundler:$BUNDLER_VERSION \
@@ -50,7 +50,7 @@ ENV RUBY_VERSION="${RUBY_MAJOR_VERSION}.${RUBY_MINOR_VERSION}"
 
 WORKDIR $HOME
 
-RUN dnf -y --enablerepo=crb module enable ruby:${RUBY_VERSION} nodejs:18 \
+RUN dnf -y --enablerepo=crb module enable ruby:${RUBY_VERSION} nodejs:24 \
     && dnf install -y --enablerepo=crb --setopt=skip_missing_names_on_install=False,tsflags=nodocs shared-mime-info postgresql rubygem-irb rubygem-rdoc ruby libpq mysql mysql-libs gd git liberation-sans-fonts file libxml2 libxslt catatonit \
     && dnf -y clean all
 
