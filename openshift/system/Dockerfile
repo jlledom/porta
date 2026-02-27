@@ -50,7 +50,7 @@ ENV RUBY_VERSION="${RUBY_MAJOR_VERSION}.${RUBY_MINOR_VERSION}"
 
 WORKDIR $HOME
 
-RUN dnf -y --enablerepo=crb module enable ruby:${RUBY_VERSION} nodejs:24 \
+RUN dnf -y --enablerepo=crb module enable ruby:${RUBY_VERSION} \
     && dnf install -y --enablerepo=crb --setopt=skip_missing_names_on_install=False,tsflags=nodocs shared-mime-info postgresql rubygem-irb rubygem-rdoc ruby libpq mysql mysql-libs gd git liberation-sans-fonts file libxml2 libxslt catatonit \
     && dnf -y clean all
 
