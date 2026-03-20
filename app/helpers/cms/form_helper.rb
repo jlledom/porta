@@ -3,12 +3,12 @@
 module CMS
   module FormHelper
 
-    def cms_form_for(template, options = {}, &block)
+    def cms_form_for(template, options = {}, &)
       options[:builder] ||= CMS::SemanticFormBuilder
       options[:url] ||= polymorphic_path([:provider, :admin, template])
       options[:as] ||= base_name(template)
 
-      semantic_form_for(template, options, &block)
+      semantic_form_for(template, options, &)
     end
 
     def cms_remote_form_for(template, options = {}, &block)

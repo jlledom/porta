@@ -5,7 +5,14 @@ module Logic
     module Master
       def signup_provider_possible?
         ensure_master
+
         !!(services.default && account_plans.default && services.default.service_plans.default)
+      end
+
+      def provider_signup_form_enabled?
+        return false unless ThreeScale.config.provider_signup_form_enabled
+
+        signup_provider_possible?
       end
     end
 
@@ -64,7 +71,7 @@ module Logic
       def signup_user
         email_part = email.split('@')
         user_attributes = { email: "#{email_part[0]}+test@#{email_part[1]}", username: 'john', first_name: 'John',
-                            last_name: 'Doe', password: '123456', password_confirmation: '123456', signup_type: :minimal}
+                            last_name: 'Doe', password: '123456', password_confirmation: '123456', signup_type: :sample_data}
         signup_params = ::Signup::SignupParams.new(plans: [], user_attributes: user_attributes, account_attributes: { org_name: 'Developer' })
         ::Signup::DeveloperAccountManager.new(@provider).create(signup_params)
       end

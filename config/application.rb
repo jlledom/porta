@@ -64,16 +64,6 @@ module System
     # Protect from open redirect attacks in `redirect_back_or_to` and `redirect_to`.
     config.action_controller.raise_on_open_redirects = false
 
-    # Change the format of the cache entry.
-    #
-    # Changing this default means that all new cache entries added to the cache
-    # will have a different format that is not supported by Rails 7.0
-    # applications.
-    # Only change this value after your application is fully deployed to Rails 7.1
-    # and you have no plans to rollback.
-    # TODO: update to 7.1
-    config.active_support.cache_format_version = 7.0
-
     # To migrate an existing application to the `:json` serializer, use the `:hybrid` option.
     #
     # Rails transparently deserializes existing (Marshal-serialized) cookies on read and
@@ -101,17 +91,13 @@ module System
     # Reconsider whether to enable again after upgrading to Rails 7.1, where the size of the header is limited to 1KB
     config.action_view.preload_links_header = false
 
-    # TODO: remove this config to get rid of the deprecation before upgrading to Rails 7.2
-    # DEPRECATION WARNING: Support for the pre-Ruby 2.4 behavior of to_time has been deprecated and will be removed in Rails 7.2.
-    # Make Ruby preserve the timezone of the receiver when calling `to_time`.
-    config.active_support.to_time_preserves_timezone = false
-
     # Applying the patch for CVE-2022-32224 broke YAML deserialization because some classes are disallowed in the serialized YAML
     config.active_record.yaml_column_permitted_classes = [Symbol, Time, Date, BigDecimal, OpenStruct,
                                                           ActionController::Parameters,
                                                           ActiveSupport::TimeWithZone,
                                                           ActiveSupport::TimeZone,
-                                                          ActiveSupport::HashWithIndifferentAccess]
+                                                          ActiveSupport::HashWithIndifferentAccess,
+                                                          'HashWithIndifferentAccess']
 
     # Keeping the historic behavior by setting to `YAML`
     # It is recommended to explicitly define the serialization method for each column

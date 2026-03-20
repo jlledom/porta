@@ -1,10 +1,6 @@
 class DeveloperPortal::Admin::Account::PersonalDetailsController < ::DeveloperPortal::BaseController
-  inherit_resources
-
   activate_menu :account, :personal_details
 
-  defaults :singleton => true, :instance_name => 'user', :route_prefix => 'admin_account'
-  actions :show, :update
   before_action :ensure_buyer_domain
   before_action :deny_unless_can_update, :only => [:update, :show]
 
@@ -50,7 +46,7 @@ class DeveloperPortal::Admin::Account::PersonalDetailsController < ::DeveloperPo
   end
 
   def verify_current_password
-    return unless current_user.using_password?
+    return unless current_user.already_using_password?
     return if current_user.authenticated?(user_params[:current_password])
 
     resource.errors.add(:current_password, t('activerecord.errors.models.user.current_password_incorrect'))

@@ -19,7 +19,7 @@
     "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "engines": {
-    "node": "18"
+    "node": "24"
   },
   "devDependencies": {
     "@babel/core": "7.21.8",
@@ -29,26 +29,21 @@
     "@typescript-eslint/parser": "^5.56.0",
     "@wojtekmaj/enzyme-adapter-react-17": "^0.8.0",
     "concurrently": "^9.2.1",
-    "empty": "^0.10.1",
     "enzyme": "^3.11.0",
     "enzyme-to-json": "^3.4.2",
     "eslint": "7.32.0",
     "eslint-import-resolver-typescript": "2.7.1",
-    "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-react": "^7.21.0",
-    "hosted-git-info": "^2.7.1",
-    "jest": "^29.5.0",
-    "jest-environment-jsdom": "^29.5.0",
-    "jest-transform-stub": "^2.0.0",
+    "jest": "30.2.0",
+    "jest-environment-jsdom": "30.2.0",
     "mockdate": "^3.0.5",
-    "raf": "^3.4.1",
-    "regenerator-runtime": "^0.13.1",
-    "swagger-tools": "^0.10.4",
-    "ts-jest": "^29.2.2",
+    "stylelint": "^16.26.0",
+    "stylelint-config-standard-scss": "^14.0.0",
+    "ts-jest": "29.4.6",
     "typescript": "5.0.4",
-    "webpack": "5.102.1",
+    "webpack": "5.104.1",
     "webpack-dev-server": "5.2.2"
   },
   "dependencies": {
@@ -65,7 +60,7 @@
     "@types/c3": "^0.7.8",
     "@types/codemirror": "^5.60.15",
     "@types/enzyme": "^3.10.13",
-    "@types/jest": "^29.5.14",
+    "@types/jest": "30.0.0",
     "@types/jquery": "^3.5.14",
     "@types/lodash.escaperegexp": "^4.1.7",
     "@types/numeral": "^2.0.2",
@@ -109,7 +104,7 @@
     "sass": "^1.97.0",
     "sass-loader": "13.3.3",
     "showdown": "2.1.0",
-    "swagger-client": "^3.32.4",
+    "swagger-client": "^3.36.1",
     "swagger-ui": "~5.12.3",
     "validate.js": "^0.13.1",
     "virtual-dom": "^2.1.1",
@@ -120,7 +115,6 @@
   "resolutions": {
     "body-parser": "1.20.3",
     "express": "4.21.2",
-    "http-proxy-middleware": "2.0.7",
     "jquery-ui/jquery": "3.7.0"
   }
 }

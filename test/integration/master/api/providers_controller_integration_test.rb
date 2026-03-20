@@ -149,6 +149,14 @@ class Master::Api::ProvidersControllerIntegrationTest < ActionDispatch::Integrat
     end
   end
 
+  test '#create succeeds when provider_signup_form_enabled is false' do
+    ThreeScale.config.stubs(provider_signup_form_enabled: false)
+    assert_difference Account.method(:count), 1 do
+      post master_api_providers_path, params: signup_params
+      assert_response :created
+    end
+  end
+
   test '#create for a master without account plan, the response status should be unprocessable_entity' do
     account_plan.destroy!
     post master_api_providers_path, params: signup_params
@@ -250,7 +258,7 @@ class Master::Api::ProvidersControllerIntegrationTest < ActionDispatch::Integrat
       org_name: 'Alaska',
       username: 'person',
       email: 'person@example.com',
-      password: '123456',
+      password: 'superSecret1234#',
       user_extra_field: 'hi-user',
       account_extra_field: 'hi-account'
     }.merge(different_params)

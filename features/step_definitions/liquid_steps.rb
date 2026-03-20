@@ -1,5 +1,5 @@
 Given /^the provider has cms page "(.*?)" with:$/ do |path, content|
-  FactoryBot.create(:cms_page, provider: @provider, path: path, published: content, liquid_enabled: true)
+  FactoryBot.create(:cms_page, provider: @provider, path:, draft: content, published: content, liquid_enabled: true)
 end
 
 Given /^I visit a page showing the current user's SSO data$/ do
@@ -22,7 +22,7 @@ Given /^I'm logged in as a malicious buyer$/ do
   @account = FactoryBot.create(:buyer_account, provider_account: @provider, org_name: buyer_name)
   @account.buy!(@provider.account_plans.default)
   @account.update_attribute(:org_name, 'malicious <script></script>buyer')
-  try_buyer_login_internal(buyer_name, 'supersecret')
+  try_buyer_login_internal(buyer_name, 'superSecret1234#')
 end
 
 When /^provider has xss protection enabled$/ do

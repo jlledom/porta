@@ -90,7 +90,7 @@ attach-to-workspace: &attach-to-workspace
     at: .
 
 system-builder-ruby33: &system-builder-ruby33
-  image: quay.io/3scale/system-builder:ruby-3.3
+  image: quay.io/3scale/system-builder:node24
   environment:
     BUNDLE_FROZEN: true
     BUNDLE_PATH: 'vendor/bundle'
@@ -98,8 +98,8 @@ system-builder-ruby33: &system-builder-ruby33
     ORACLE_SYSTEM_PASSWORD: threescalepass
     NLS_LANG: AMERICAN_AMERICA.UTF8
     TZ: UTC
-    MASTER_PASSWORD: p
-    USER_PASSWORD: p
+    MASTER_PASSWORD: superSecret1234#
+    USER_PASSWORD: superSecret1234#
     LC_ALL: C.utf8
     RAILS_ENV: test
 

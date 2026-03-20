@@ -452,7 +452,7 @@ en:
 
     invitee_signups:
       create:
-        error: There are some errors:\n%{errors}
+        error: "There are some errors:\n%{errors}"
         success: Thanks for signing up! You can now sign in
       already_logged_in: You are already signed up. Log out if you want to sign up again
 
@@ -569,6 +569,7 @@ en:
             unlimited_access: Unlimited access
           destroy:
             success: User was successfully deleted
+            error: User could not be deleted
           form:
             submit_button_label: Update User
           update:
@@ -824,6 +825,8 @@ en:
             success: Created new file
           destroy:
             success: File %{path} deleted
+          update:
+            success: File updated
 
         groups:
           create:
@@ -860,9 +863,22 @@ en:
         versions:
           destroy:
             success: Version was destroyed
+          index:
+            link_title: Show %{name}
+            title:
+              header: Archived Versions of %{class} %{name}
+              body: There are no archived versions for this page. Remember that a version is archived only if you publish your changes, not just when you save.
           revert:
+            confirm:
+              Do you want to replace %{name}'s current %{state} template with this version?
+              Unsaved changes will be lost.
+            title: Revert
             error: Problem reverting version
             success: Reverted to version from %{date}
+          show:
+            title:
+              header: Version of %{class} %{name}
+              body_html: Showing <b>%{state}</b> version from <b>%{date}</b>.
 
       user:
         access_tokens:
@@ -870,6 +886,7 @@ en:
             success: Access token was successfully created
           destroy:
             success: Access token was successfully deleted
+            error: Access token could not be deleted
           edit:
             page_header_title: Edit Access Token
             submit_button_label: Update Access Token
@@ -897,7 +914,6 @@ en:
           edit:
             header_title: Personal Details
             submit_button_label: Update Details
-            set_password_html: You have no password set. If you'd like to set one use the <a href="%{href}">password reset form</a>.
             new_password_label: New password
           update:
             success: User was successfully updated
@@ -1099,6 +1115,9 @@ en:
       show:
         page_title: Groups of %{org_name}
         empty_state:
+          body:
+            Groups control access to protected sections in your developer portal.
+            Assign accounts to groups to grant them access to specific content.
           title: No groups yet
           primary: Create a group
       update:
@@ -1120,6 +1139,13 @@ en:
           new one.
       edit:
         error: Invoice is no longer editable
+      index:
+        empty_state:
+          title: No invoices for this account
+          body: ''
+          primary: Create an invoice
+      toolbar:
+        primary: Create invoice
       update:
         success: Invoice was successfully updated
 
@@ -1843,6 +1869,10 @@ en:
           attributes:
             service:
               not_found: 'not found'
+            body:
+              invalid_swagger: "JSON Spec is invalid"
+              invalid_json: "Invalid JSON"
+              invalid_base_path: "Server URL in the specification is invalid"
 
         metric:
           attributes:
@@ -2216,7 +2246,6 @@ en:
         approval_required_referer: "Set per account plan from %{link}."
         account_approval_required: "Approval is required by you before developer accounts are activated."
         useraccountarea_enabled: 'Only disable this if you provide another way to manage this information (e.g. via the User Management API).'
-        strong_passwords_enabled: "Require strong passwords from your users: %{strong_password_definition} Existing passwords will still work."
         public_search: >
           Allow anyone to search on your Developer Portal.
           If you have Restricted Pages your Developer Portal we advise you not to change this setting.
@@ -2356,7 +2385,6 @@ en:
         hide_service: 'Used a default service plan'
         signups_enabled: 'Developers are allowed sign up themselves'
         cas_server_url: 'CAS Server URL'
-        strong_passwords_enabled: 'Strong passwords'
         public_search: 'Enable public search on Developer Portal'
         cms_escape_draft_html: 'Use Automatic Escaping for draft content'
         cms_escape_published_html: 'Use Automatic Escaping for published content'
@@ -2399,6 +2427,13 @@ en:
   action_controller:
     errors:
       unknown_format: 'The server does not understand "%{request_format}" request.'
+
+  layouts:
+    cms:
+      filter:
+        all: Show all content
+        own: Show only my content
+        builtin: Show only 3scale content
 
   shared:
     annotations:
