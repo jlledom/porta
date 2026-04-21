@@ -71,6 +71,74 @@ class Sites::SecurityTest < ActionDispatch::IntegrationTest
     assert_nil @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderDeveloper')
   end
 
+  test 'displays Content-Security-Policy Header field' do
+    get edit_admin_site_security_path
+    assert_response :success
+    assert_match 'Content-Security-Policy Header', response.body
+  end
+
+  test 'updates Content-Security-Policy header' do
+    csp_value = "default-src 'self'"
+
+    put admin_site_security_path, params: {
+      settings: {
+        spam_protection_level: 'none',
+        csp_header_developer: csp_value
+      }
+    }
+
+    assert_redirected_to edit_admin_site_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderDeveloper')
+    assert_equal csp_value, setting.value
+  end
+
+  test 'updates Content-Security-Policy header to a blank value' do
+    put admin_site_security_path, params: {
+      settings: {
+        spam_protection_level: 'none',
+        csp_header_developer: ''
+      }
+    }
+
+    assert_redirected_to edit_admin_site_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderDeveloper')
+    assert setting.value.blank?
+  end
+
+  test 'omitting CSP header field deletes existing setting' do
+    @provider.account_settings.create!(
+      type: 'AccountSetting::CspHeaderDeveloper',
+      value: "default-src 'self'"
+    )
+
+    put admin_site_security_path, params: {
+      settings: { spam_protection_level: 'none' }
+    }
+
+    assert_redirected_to edit_admin_site_security_path
+    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderDeveloper')
+  end
+
+  test 'updates CSP report-only setting' do
+    put admin_site_security_path, params: {
+      settings: {
+        spam_protection_level: 'none',
+        csp_header_developer: "default-src 'self'",
+        csp_report_only_developer: '1'
+      }
+    }
+
+    assert_redirected_to edit_admin_site_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyDeveloper')
+    assert_equal '1', setting.value
+  end
+
   test 'updates spam protection level setting' do
     put admin_site_security_path, params: {
       settings: {

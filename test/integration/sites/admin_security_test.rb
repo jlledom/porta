@@ -85,6 +85,97 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_nil @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderAdmin')
   end
 
+  test 'displays Content-Security-Policy Header field' do
+    get edit_provider_admin_security_path
+    assert_response :success
+    assert_match 'Content-Security-Policy Header', response.body
+  end
+
+  test 'updates Content-Security-Policy header' do
+    csp_value = "default-src 'self'; script-src 'self'"
+
+    put provider_admin_security_path, params: {
+      settings: {
+        admin_bot_protection_level: 'none',
+        csp_header_admin: csp_value
+      }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    assert_equal csp_value, setting.value
+  end
+
+  test 'updates Content-Security-Policy header to a blank value' do
+    put provider_admin_security_path, params: {
+      settings: {
+        admin_bot_protection_level: 'none',
+        csp_header_admin: ''
+      }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    assert setting.value.blank?
+  end
+
+  test 'omitting CSP header field deletes existing setting' do
+    @provider.account_settings.create!(
+      type: 'AccountSetting::CspHeaderAdmin',
+      value: "default-src 'self'"
+    )
+
+    put provider_admin_security_path, params: {
+      settings: { admin_bot_protection_level: 'none' }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+  end
+
+  test 'omitting CSP header field when no setting exists does not break' do
+    put provider_admin_security_path, params: {
+      settings: { admin_bot_protection_level: 'none' }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+  end
+
+  test 'updates CSP report-only setting' do
+    put provider_admin_security_path, params: {
+      settings: {
+        admin_bot_protection_level: 'none',
+        csp_header_admin: "default-src 'self'",
+        csp_report_only_admin: '1'
+      }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+
+    @provider.reload
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyAdmin')
+    assert_equal '1', setting.value
+  end
+
+  test 'omitting CSP report-only defaults to false behavior' do
+    @provider.account_settings.create!(
+      type: 'AccountSetting::CspReportOnlyAdmin',
+      value: '1'
+    )
+
+    put provider_admin_security_path, params: {
+      settings: { admin_bot_protection_level: 'none' }
+    }
+
+    assert_redirected_to edit_provider_admin_security_path
+    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyAdmin')
+  end
+
   test 'setting header to space results in header being present in response' do
     policy_value = ' '
 
