@@ -24,5 +24,21 @@ module DeveloperPortal
       # Set header only if value is present (even if only whitespaces)
       response.headers['Permissions-Policy'] = header_value if header_value&.size&.nonzero?
     end
+
+    def set_csp_header
+      header_value = AccountSettings::SettingCache.fetch(
+        account: site_account,
+        setting_name: 'csp_header_developer'
+      )
+      return unless header_value&.size&.nonzero?
+
+      report_only = AccountSettings::SettingCache.fetch(
+        account: site_account,
+        setting_name: 'csp_report_only_developer'
+      )
+
+      header_name = report_only == "1" ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy'
+      response.headers[header_name] = header_value
+    end
   end
 end

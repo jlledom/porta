@@ -1,0 +1,12 @@
+- pp_name = setting.setting_name
+- hint = setting.default_value.presence ? t('provider.admin.securities.form.default_hint', default_value: setting.default_value) : t('provider.admin.securities.form.default_hint_none')
+
+= form.inputs setting.display_name do
+  label
+    input type="checkbox" id="override_#{pp_name}" data-toggle-target=pp_name checked=setting.persisted?
+    = t('provider.admin.securities.form.use_custom_value')
+  = form.input pp_name.to_sym,
+          as: :patternfly_input,
+          label: setting.display_name,
+          hint: hint,
+          input_html: { id: pp_name, value: setting.value, disabled: setting.new_record? }

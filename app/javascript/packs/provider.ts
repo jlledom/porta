@@ -28,13 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
       })
     })
 
-  // Toggle target input disabled state via [data-toggle-target] checkboxes
+  // Toggle target input(s) disabled state via [data-toggle-target] checkboxes.
+  // If the target is an input, toggle it directly. If it's a container, toggle all inputs within.
   document.addEventListener('change', (event) => {
     const el = event.target as HTMLInputElement
     const targetId = el.getAttribute('data-toggle-target')
     if (targetId) {
-      const target = document.getElementById(targetId) as HTMLInputElement | null
-      if (target) target.disabled = !el.checked
+      const target = document.getElementById(targetId)
+      if (!target) return
+      if (target instanceof HTMLInputElement) {
+        target.disabled = !el.checked
+      } else {
+        target.querySelectorAll<HTMLInputElement>('input').forEach(input => {
+          input.disabled = !el.checked
+        })
+      }
     }
   })
 })

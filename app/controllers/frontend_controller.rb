@@ -35,6 +35,7 @@ class FrontendController < ApplicationController
   before_action :login_required
   before_action :set_display_currency
   before_action :set_permissions_policy_header
+  before_action :set_csp_header
 
   include RedhatCustomerPortalSupport::ControllerMethods::Banner
 
@@ -182,6 +183,22 @@ class FrontendController < ApplicationController
 
     # Set header if value exists (even if only a whitespace)
     response.headers['Permissions-Policy'] = header_value if header_value&.size&.nonzero?
+  end
+
+  def set_csp_header
+    header_value = AccountSettings::SettingCache.fetch(
+      account: domain_account,
+      setting_name: 'csp_header_admin'
+    )
+    return unless header_value&.size&.nonzero?
+
+    report_only = AccountSettings::SettingCache.fetch(
+      account: domain_account,
+      setting_name: 'csp_report_only_admin'
+    )
+
+    header_name = report_only == "1" ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy'
+    response.headers[header_name] = header_value
   end
 
   def quickstarts_presenter
