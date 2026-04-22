@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountSetting::HttpHeaders < AccountSetting
+class AccountSetting::HttpHeader < AccountSetting
   include AccountSetting::CacheRefresh
 
   validates :value,

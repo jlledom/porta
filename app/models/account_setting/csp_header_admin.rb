@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class AccountSetting::CspHeaderAdmin < AccountSetting::HttpHeaders
+class AccountSetting::CspHeaderAdmin < AccountSetting::HttpHeader
   def self.display_name = "Content-Security-Policy Header"
 
   def self.build_default_value
