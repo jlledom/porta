@@ -3,8 +3,8 @@
 class AccountSetting::CspHeaderAdmin < AccountSetting::HttpHeaders
   def self.display_name = "Content-Security-Policy Header"
 
-  self.default_value = begin
-    asset_host = ENV['RAILS_ASSET_HOST'].presence
+  def self.build_default_value
+    asset_host = Rails.configuration.asset_host.presence
 
     sources = {
       default_src:     ["'self'"],
@@ -29,5 +29,13 @@ class AccountSetting::CspHeaderAdmin < AccountSetting::HttpHeaders
     end
 
     sources.map { |directive, values| "#{directive.to_s.tr('_', '-')} #{values.join(' ')}" }.join("; ")
+  end
+
+  self.default_value = build_default_value
+
+  if Rails.env.test?
+    def self.reload_default_value!
+      self.default_value = build_default_value
+    end
   end
 end
