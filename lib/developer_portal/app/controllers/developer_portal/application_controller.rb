@@ -26,19 +26,17 @@ module DeveloperPortal
     end
 
     def set_csp_header
-      header_value = AccountSettings::SettingCache.fetch(
+      csp_value = AccountSettings::SettingCache.fetch(
         account: site_account,
         setting_name: 'csp_header_developer'
       )
-      return unless header_value&.size&.nonzero?
+      response.headers['Content-Security-Policy'] = csp_value if csp_value&.size&.nonzero?
 
-      report_only = AccountSettings::SettingCache.fetch(
+      csp_ro_value = AccountSettings::SettingCache.fetch(
         account: site_account,
-        setting_name: 'csp_report_only_developer'
+        setting_name: 'csp_report_only_header_developer'
       )
-
-      header_name = report_only == "1" ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy'
-      response.headers[header_name] = header_value
+      response.headers['Content-Security-Policy-Report-Only'] = csp_ro_value if csp_ro_value&.size&.nonzero?
     end
   end
 end

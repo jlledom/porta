@@ -186,19 +186,17 @@ class FrontendController < ApplicationController
   end
 
   def set_csp_header
-    header_value = AccountSettings::SettingCache.fetch(
+    csp_value = AccountSettings::SettingCache.fetch(
       account: domain_account,
       setting_name: 'csp_header_admin'
     )
-    return unless header_value&.size&.nonzero?
+    response.headers['Content-Security-Policy'] = csp_value if csp_value&.size&.nonzero?
 
-    report_only = AccountSettings::SettingCache.fetch(
+    csp_ro_value = AccountSettings::SettingCache.fetch(
       account: domain_account,
-      setting_name: 'csp_report_only_admin'
+      setting_name: 'csp_report_only_header_admin'
     )
-
-    header_name = report_only == "1" ? 'Content-Security-Policy-Report-Only' : 'Content-Security-Policy'
-    response.headers[header_name] = header_value
+    response.headers['Content-Security-Policy-Report-Only'] = csp_ro_value if csp_ro_value&.size&.nonzero?
   end
 
   def quickstarts_presenter

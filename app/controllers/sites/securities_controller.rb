@@ -6,7 +6,7 @@ class Sites::SecuritiesController < Sites::BaseController
   ACCOUNT_SETTING_TYPES = %w[
     AccountSetting::PermissionsPolicyHeaderDeveloper
     AccountSetting::CspHeaderDeveloper
-    AccountSetting::CspReportOnlyDeveloper
+    AccountSetting::CspReportOnlyHeaderDeveloper
   ].freeze
 
   before_action :find_settings
@@ -40,14 +40,13 @@ class Sites::SecuritiesController < Sites::BaseController
   end
 
   def find_account_settings
-    @account_settings = ACCOUNT_SETTING_TYPES.each_with_object({}) do |type, hash|
-      setting = current_account.account_settings.find_or_initialize_by(type: type)
-      hash[setting.setting_name] = setting
+    @account_settings = ACCOUNT_SETTING_TYPES.map do |type|
+      current_account.account_settings.find_or_initialize_by(type: type)
     end
   end
 
   def update_account_settings
-    @account_settings.values.all? do |setting|
+    @account_settings.all? do |setting|
       value = params.dig(:settings, setting.setting_name)
 
       if value.nil?
