@@ -146,26 +146,25 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
   end
 
-  test 'updates CSP report-only setting' do
+  test 'updates CSP report-only header setting' do
     put provider_admin_security_path, params: {
       settings: {
         admin_bot_protection_level: 'none',
-        csp_header_admin: "default-src 'self'",
-        csp_report_only_admin: '1'
+        csp_report_only_header_admin: "default-src 'none'"
       }
     }
 
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyAdmin')
-    assert_equal '1', setting.value
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyHeaderAdmin')
+    assert_equal "default-src 'none'", setting.value
   end
 
-  test 'omitting CSP report-only defaults to false behavior' do
+  test 'omitting CSP report-only header destroys existing setting' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyAdmin',
-      value: '1'
+      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      value: "default-src 'none'"
     )
 
     put provider_admin_security_path, params: {
@@ -173,7 +172,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyHeaderAdmin')
   end
 
   test 'setting header to space results in header being present in response' do

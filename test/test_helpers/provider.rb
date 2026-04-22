@@ -100,8 +100,8 @@ module TestHelpers
           AccountSetting::CspHeaderAdmin.create!(account: provider, value: "default-src ''")
           AccountSetting::CspHeaderDeveloper.create!(account: provider, value: "")
 
-          AccountSetting::CspReportOnlyAdmin.create!(account: provider, value: "1")
-          AccountSetting::CspReportOnlyDeveloper.create!(account: provider, value: "1")
+          AccountSetting::CspReportOnlyHeaderAdmin.create!(account: provider, value: "default-src 'self'")
+          AccountSetting::CspReportOnlyHeaderDeveloper.create!(account: provider, value: "default-src 'self'")
 
           LatestForumPostsPortlet.create!(provider:, portlet_type: 'LatestForumPostsPortlet', system_name: 'name', posts: forum.posts.count)
           TableOfContentsPortlet.create!(provider:, portlet_type: 'TableOfContentsPortlet', system_name: 'name', section_id: provider.provided_sections.first.id)

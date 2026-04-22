@@ -94,34 +94,29 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     assert_equal "default-src 'self'", response.headers['Content-Security-Policy']
   end
 
-  test 'admin portal uses Content-Security-Policy-Report-Only header when report-only is enabled' do
+  test 'admin portal sets Content-Security-Policy-Report-Only header from AccountSetting' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderAdmin',
-      value: "default-src 'self'"
-    )
-    provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyAdmin',
-      value: '1'
+      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      value: "default-src 'none'"
     )
 
     login_provider provider
     get edit_provider_admin_security_path
 
     assert_response :success
-    assert_equal "default-src 'self'", response.headers['Content-Security-Policy-Report-Only']
-    assert_nil response.headers['Content-Security-Policy']
+    assert_equal "default-src 'none'", response.headers['Content-Security-Policy-Report-Only']
   end
 
-  test 'admin portal uses Content-Security-Policy header when report-only is false' do
+  test 'admin portal sets both CSP headers simultaneously' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
       type: 'AccountSetting::CspHeaderAdmin',
       value: "default-src 'self'"
     )
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyAdmin',
-      value: '0'
+      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      value: "default-src 'none'"
     )
 
     login_provider provider
@@ -129,10 +124,31 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal "default-src 'self'", response.headers['Content-Security-Policy']
-    assert_nil response.headers['Content-Security-Policy-Report-Only']
+    assert_equal "default-src 'none'", response.headers['Content-Security-Policy-Report-Only']
   end
 
-  test 'developer portal uses Content-Security-Policy-Report-Only header when report-only is enabled' do
+  test 'developer portal sets Content-Security-Policy-Report-Only header from AccountSetting' do
+    provider = FactoryBot.create(:provider_account)
+    buyer = FactoryBot.create(:buyer_account, provider_account: provider)
+    user = FactoryBot.create(:user, account: buyer)
+    user.activate!
+
+    provider.account_settings.create!(
+      type: 'AccountSetting::CspReportOnlyHeaderDeveloper',
+      value: "default-src 'none'"
+    )
+
+    DeveloperPortal::BaseController.any_instance.stubs(:site_account).returns(provider)
+
+    host! provider.internal_domain
+    login_with user.username, 'superSecret1234#'
+    get '/admin'
+
+    assert_response :success
+    assert_equal "default-src 'none'", response.headers['Content-Security-Policy-Report-Only']
+  end
+
+  test 'developer portal sets both CSP headers simultaneously' do
     provider = FactoryBot.create(:provider_account)
     buyer = FactoryBot.create(:buyer_account, provider_account: provider)
     user = FactoryBot.create(:user, account: buyer)
@@ -143,8 +159,8 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
       value: "default-src 'self'"
     )
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyDeveloper',
-      value: '1'
+      type: 'AccountSetting::CspReportOnlyHeaderDeveloper',
+      value: "default-src 'none'"
     )
 
     DeveloperPortal::BaseController.any_instance.stubs(:site_account).returns(provider)
@@ -154,8 +170,8 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     get '/admin'
 
     assert_response :success
-    assert_equal "default-src 'self'", response.headers['Content-Security-Policy-Report-Only']
-    assert_nil response.headers['Content-Security-Policy']
+    assert_equal "default-src 'self'", response.headers['Content-Security-Policy']
+    assert_equal "default-src 'none'", response.headers['Content-Security-Policy-Report-Only']
   end
 
   test 'Sites controller (dev portal settings) uses admin Content-Security-Policy header' do

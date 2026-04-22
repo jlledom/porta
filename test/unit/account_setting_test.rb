@@ -9,8 +9,8 @@ class AccountSettingTest < ActiveSupport::TestCase
     assert_equal AccountSetting::PermissionsPolicyHeaderAdmin, AccountSetting.class_for_setting('permissions_policy_header_admin')
     assert_equal AccountSetting::CspHeaderAdmin, AccountSetting.class_for_setting(:csp_header_admin)
     assert_equal AccountSetting::CspHeaderDeveloper, AccountSetting.class_for_setting(:csp_header_developer)
-    assert_equal AccountSetting::CspReportOnlyAdmin, AccountSetting.class_for_setting(:csp_report_only_admin)
-    assert_equal AccountSetting::CspReportOnlyDeveloper, AccountSetting.class_for_setting(:csp_report_only_developer)
+    assert_equal AccountSetting::CspReportOnlyHeaderAdmin, AccountSetting.class_for_setting(:csp_report_only_header_admin)
+    assert_equal AccountSetting::CspReportOnlyHeaderDeveloper, AccountSetting.class_for_setting(:csp_report_only_header_developer)
   end
 
   test 'class_for_setting returns nil for non-existent setting' do

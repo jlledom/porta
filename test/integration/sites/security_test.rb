@@ -123,20 +123,19 @@ class Sites::SecurityTest < ActionDispatch::IntegrationTest
     assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderDeveloper')
   end
 
-  test 'updates CSP report-only setting' do
+  test 'updates CSP report-only header setting' do
     put admin_site_security_path, params: {
       settings: {
         spam_protection_level: 'none',
-        csp_header_developer: "default-src 'self'",
-        csp_report_only_developer: '1'
+        csp_report_only_header_developer: "default-src 'none'"
       }
     }
 
     assert_redirected_to edit_admin_site_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyDeveloper')
-    assert_equal '1', setting.value
+    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyHeaderDeveloper')
+    assert_equal "default-src 'none'", setting.value
   end
 
   test 'updates spam protection level setting' do
