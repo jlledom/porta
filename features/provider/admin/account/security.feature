@@ -11,6 +11,7 @@ Feature: Provider admin security settings
     Then I should see "Security"
     And I should see "Permissions-Policy Header"
     And I should see "Content-Security-Policy Header"
+    And I should see "Content-Security-Policy-Report-Only Header"
 
   Scenario: Update admin portal Permissions-Policy header
     When I go to the provider security settings page
@@ -56,11 +57,18 @@ Feature: Provider admin security settings
     Then I should see "Security settings updated"
     And the admin portal should not have configured CSP header
 
-  Scenario: Enable CSP report-only mode
+  Scenario: Update admin portal Content-Security-Policy-Report-Only header
     When I go to the provider security settings page
-    And I check "override_csp_header_admin"
-    And I fill in "csp_header_admin" with "default-src 'self'"
-    And I check "settings[csp_report_only_admin]"
+    And I check "override_csp_report_only_header_admin"
+    And I fill in "csp_report_only_header_admin" with "default-src 'self'"
     And I press "Update Security Settings"
     Then I should see "Security settings updated"
-    And the admin portal should have CSP report-only enabled
+    And the admin portal should have configured CSP Report-Only header "default-src 'self'"
+
+  Scenario: Uncheck override deletes existing Content-Security-Policy-Report-Only setting
+    Given the provider has configured admin portal CSP Report-Only "default-src 'self'"
+    When I go to the provider security settings page
+    And I uncheck "override_csp_report_only_header_admin"
+    And I press "Update Security Settings"
+    Then I should see "Security settings updated"
+    And the admin portal should not have configured CSP Report-Only header

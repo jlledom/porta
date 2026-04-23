@@ -36,8 +36,20 @@ Then('the {word} portal should not have configured CSP header') do |portal|
   assert setting.nil? || setting.value.blank?, "Expected #{portal} portal CSP to be blank or not exist"
 end
 
-Then('the {word} portal should have CSP report-only enabled') do |portal|
-  setting = @provider.account_settings.find_by(type: "AccountSetting::CspReportOnly#{portal.capitalize}")
-  assert_not_nil setting, "Expected #{portal} portal CSP report-only setting to exist"
-  assert_equal '1', setting.value
+Given('the provider has configured {word} portal CSP Report-Only {string}') do |portal, csp_value|
+  @provider.account_settings.create!(
+    type: "AccountSetting::CspReportOnlyHeader#{portal.capitalize}",
+    value: csp_value
+  )
+end
+
+Then('the {word} portal should have configured CSP Report-Only header {string}') do |portal, expected_value|
+  setting = @provider.account_settings.find_by(type: "AccountSetting::CspReportOnlyHeader#{portal.capitalize}")
+  assert_not_nil setting, "Expected #{portal} portal CSP Report-Only setting to exist"
+  assert_equal expected_value, setting.value
+end
+
+Then('the {word} portal should not have configured CSP Report-Only header') do |portal|
+  setting = @provider.account_settings.find_by(type: "AccountSetting::CspReportOnlyHeader#{portal.capitalize}")
+  assert setting.nil? || setting.value.blank?, "Expected #{portal} portal CSP Report-Only to be blank or not exist"
 end
