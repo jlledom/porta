@@ -14,7 +14,7 @@
             label class="pf-c-radio__label #{'pf-m-disabled' if disabled}" for=id
               = label
 
-  - @account_settings.each do |account_setting|
+  - account_settings.each do |account_setting|
     - setting_name = account_setting.setting_name
     - hint = account_setting.default_value.presence ? t('provider.admin.securities.form.default_hint', default_value: account_setting.default_value) : t('provider.admin.securities.form.default_hint_none')
     = form.inputs account_setting.display_name do
