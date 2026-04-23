@@ -3,14 +3,12 @@
 Given /^the asset host is unset$/ do
   Rails.configuration.three_scale.asset_host = nil
   Rails.configuration.asset_host = nil
-  AccountSetting::CspHeaderAdmin.reload_default_value!
 end
 
 Given /^the asset host is set to "(.*)"$/ do |asset_host|
   cdn_url = "#{asset_host}:#{Capybara.current_session.server.port}"
   Rails.configuration.three_scale.asset_host = cdn_url
   Rails.configuration.asset_host = cdn_url
-  AccountSetting::CspHeaderAdmin.reload_default_value!
 end
 
 Then /^(?:javascript\s)?assets should be loaded from the asset host$/ do
