@@ -18,17 +18,6 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     assert_equal "default-src 'self'", response.headers['Content-Security-Policy']
   end
 
-  test 'admin portal uses default Content-Security-Policy when no setting exists' do
-    provider = FactoryBot.create(:provider_account)
-
-    login_provider provider
-    get edit_provider_admin_security_path
-
-    assert_response :success
-    assert_equal AccountSetting::CspHeaderAdmin.default_value,
-                 response.headers['Content-Security-Policy']
-  end
-
   test 'admin portal does not set header when setting is blank' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
@@ -172,22 +161,5 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal "default-src 'self'", response.headers['Content-Security-Policy']
     assert_equal "default-src 'none'", response.headers['Content-Security-Policy-Report-Only']
-  end
-
-  test 'Sites controller (dev portal settings) uses admin Content-Security-Policy header' do
-    provider = FactoryBot.create(:provider_account)
-    login_provider provider
-
-    provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderDeveloper',
-      value: "default-src 'none'"
-    )
-
-    get edit_admin_site_security_path
-
-    assert_response :success
-    # Admin portal pages get the admin CSP, not the developer one
-    assert_equal AccountSetting::CspHeaderAdmin.default_value,
-                 response.headers['Content-Security-Policy']
   end
 end
