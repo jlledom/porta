@@ -44,7 +44,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderAdmin')
+    setting = @provider.account_settings.find_by(type: 'PermissionsPolicyHeaderAdmin')
     assert_equal policy_value, setting.value
   end
 
@@ -63,7 +63,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
 
   test 'omitting header field deletes existing setting' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::PermissionsPolicyHeaderAdmin',
+      type: 'PermissionsPolicyHeaderAdmin',
       value: 'camera=()'
     )
 
@@ -73,7 +73,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'PermissionsPolicyHeaderAdmin')
   end
 
   test 'omitting header field when no setting exists does not break' do
@@ -82,7 +82,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'PermissionsPolicyHeaderAdmin')
   end
 
   test 'displays Content-Security-Policy Header field' do
@@ -104,7 +104,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    setting = @provider.account_settings.find_by(type: 'CspHeaderAdmin')
     assert_equal csp_value, setting.value
   end
 
@@ -119,13 +119,13 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    setting = @provider.account_settings.find_by(type: 'CspHeaderAdmin')
     assert setting.value.blank?
   end
 
   test 'omitting CSP header field deletes existing setting' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderAdmin',
+      type: 'CspHeaderAdmin',
       value: "default-src 'self'"
     )
 
@@ -134,7 +134,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'CspHeaderAdmin')
   end
 
   test 'omitting CSP header field when no setting exists does not break' do
@@ -143,7 +143,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspHeaderAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'CspHeaderAdmin')
   end
 
   test 'updates CSP report-only header setting' do
@@ -157,13 +157,13 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyHeaderAdmin')
+    setting = @provider.account_settings.find_by(type: 'CspReportOnlyHeaderAdmin')
     assert_equal "default-src 'none'", setting.value
   end
 
   test 'omitting CSP report-only header destroys existing setting' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      type: 'CspReportOnlyHeaderAdmin',
       value: "default-src 'none'"
     )
 
@@ -172,7 +172,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     }
 
     assert_redirected_to edit_provider_admin_security_path
-    assert_nil @provider.account_settings.find_by(type: 'AccountSetting::CspReportOnlyHeaderAdmin')
+    assert_nil @provider.account_settings.find_by(type: 'CspReportOnlyHeaderAdmin')
   end
 
   test 'setting header to space results in header being present in response' do
@@ -188,7 +188,7 @@ class Sites::AdminSecurityTest < ActionDispatch::IntegrationTest
     assert_redirected_to edit_provider_admin_security_path
 
     @provider.reload
-    setting = @provider.account_settings.find_by(type: 'AccountSetting::PermissionsPolicyHeaderAdmin')
+    setting = @provider.account_settings.find_by(type: 'PermissionsPolicyHeaderAdmin')
     assert_equal policy_value, setting.value
 
     # Verify the header is present in the response

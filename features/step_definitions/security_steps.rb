@@ -2,7 +2,7 @@
 
 def header_setting_type(header_name, portal)
   class_prefix = header_name.split(/[\s-]/).map(&:capitalize).join
-  "AccountSetting::#{class_prefix}Header#{portal.capitalize}"
+  "#{class_prefix}Header#{portal.capitalize}"
 end
 
 Given(/^the provider has configured (\w+) portal (.+?) "([^"]*)"$/) do |portal, header_name, value|

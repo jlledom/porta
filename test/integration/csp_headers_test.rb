@@ -7,7 +7,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
   test 'admin portal sets Content-Security-Policy header from AccountSetting' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderAdmin',
+      type: 'CspHeaderAdmin',
       value: "default-src 'self'"
     )
 
@@ -21,7 +21,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
   test 'admin portal does not set header when setting is blank' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderAdmin',
+      type: 'CspHeaderAdmin',
       value: ''
     )
 
@@ -39,7 +39,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     user.activate!
 
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderDeveloper',
+      type: 'CspHeaderDeveloper',
       value: "default-src 'self'"
     )
 
@@ -72,7 +72,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
   test 'developer portal sets Content-Security-Policy header on unauthenticated pages' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderDeveloper',
+      type: 'CspHeaderDeveloper',
       value: "default-src 'self'"
     )
 
@@ -86,7 +86,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
   test 'admin portal sets Content-Security-Policy-Report-Only header from AccountSetting' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      type: 'CspReportOnlyHeaderAdmin',
       value: "default-src 'none'"
     )
 
@@ -100,11 +100,11 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
   test 'admin portal sets both CSP headers simultaneously' do
     provider = FactoryBot.create(:provider_account)
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderAdmin',
+      type: 'CspHeaderAdmin',
       value: "default-src 'self'"
     )
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyHeaderAdmin',
+      type: 'CspReportOnlyHeaderAdmin',
       value: "default-src 'none'"
     )
 
@@ -123,7 +123,7 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     user.activate!
 
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyHeaderDeveloper',
+      type: 'CspReportOnlyHeaderDeveloper',
       value: "default-src 'none'"
     )
 
@@ -144,11 +144,11 @@ class CspHeadersTest < ActionDispatch::IntegrationTest
     user.activate!
 
     provider.account_settings.create!(
-      type: 'AccountSetting::CspHeaderDeveloper',
+      type: 'CspHeaderDeveloper',
       value: "default-src 'self'"
     )
     provider.account_settings.create!(
-      type: 'AccountSetting::CspReportOnlyHeaderDeveloper',
+      type: 'CspReportOnlyHeaderDeveloper',
       value: "default-src 'none'"
     )
 

@@ -17,7 +17,7 @@ class AccountSettings::SettingCacheTest < ActiveSupport::TestCase
 
   test 'fetch returns setting value when it exists' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::PermissionsPolicyHeaderAdmin',
+      type: 'PermissionsPolicyHeaderAdmin',
       value: 'camera=(), microphone=()'
     )
 
@@ -38,7 +38,7 @@ class AccountSettings::SettingCacheTest < ActiveSupport::TestCase
 
   test 'fetch caches the value after first call' do
     @provider.account_settings.create!(
-      type: 'AccountSetting::PermissionsPolicyHeaderDeveloper',
+      type: 'PermissionsPolicyHeaderDeveloper',
       value: 'camera=(), geolocation=()'
     )
 
