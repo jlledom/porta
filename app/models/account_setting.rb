@@ -3,6 +3,13 @@
 class AccountSetting < ApplicationRecord
   self.store_full_sti_class = false
 
+  def self.find_sti_class(type_name)
+    super
+  rescue ActiveRecord::SubclassNotFound
+    # In case there are records for unknown settings
+    self
+  end
+
   # TODO: remove attr_accessible once protected_attributes_continued gem is removed
   attr_accessible :type, :value, :account, :tenant_id
 
