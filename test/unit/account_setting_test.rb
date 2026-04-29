@@ -32,6 +32,21 @@ class AccountSettingTest < ActiveSupport::TestCase
     end
   end
 
+  test 'find_sti_class reports error and falls back to base class for unknown type' do
+    account = FactoryBot.create(:simple_provider)
+    setting = AccountSetting::PermissionsPolicyHeaderAdmin.create!(
+      account: account,
+      value: "camera 'none'"
+    )
+
+    AccountSetting.where(id: setting.id).update_all(type: 'NonExistent')
+
+    System::ErrorReporting.expects(:report_error).with(instance_of(ActiveRecord::SubclassNotFound))
+
+    loaded = AccountSetting.find(setting.id)
+    assert_instance_of AccountSetting, loaded
+  end
+
   test 'tenant_id trigger' do
     account = FactoryBot.create(:simple_provider)
     setting = AccountSetting::PermissionsPolicyHeaderAdmin.create!(
