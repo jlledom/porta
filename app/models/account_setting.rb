@@ -5,8 +5,9 @@ class AccountSetting < ApplicationRecord
 
   def self.find_sti_class(type_name)
     super
-  rescue ActiveRecord::SubclassNotFound
+  rescue ActiveRecord::SubclassNotFound => exception
     # In case there are records for unknown settings
+    System::ErrorReporting.report_error(exception)
     self
   end
 
